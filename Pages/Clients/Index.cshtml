@@ -1,0 +1,32 @@
+@page
+@model EventRegistration.Pages.Clients.IndexModel
+
+<h2>Registered Clients</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Date Registered</th>
+            <th>Event Days</th>
+            <th>Additional Request</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model.Clients)
+        {
+        <tr>
+            <td>@client.Name</td>
+            <td>@client.Email</td>
+            <td>@client.Gender</td>
+            <td>@client.DateRegistered.ToString("yyyy-MM-dd")</td>
+            <td>@client.SelectedDays</td>
+            <td>@client.AdditionalRequest</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="/Clients/Create">Add New Client</a>

@@ -1,0 +1,47 @@
+@page
+@model EventRegistration.Pages.Clients.CreateModel
+
+<h2>Register Client</h2>
+
+<form method="post">
+    <label>Name:</label>
+    <input asp-for="Client.Name" />
+    <span asp-validation-for="Client.Name" class="text-danger"></span>
+    <br />
+
+    <label>Email:</label>
+    <input asp-for="Client.Email" type="email" />
+    <span asp-validation-for="Client.Email" class="text-danger"></span>
+    <br />
+
+    <label>Gender:</label>
+    <input type="radio" asp-for="Client.Gender" value="M" /> Male
+    <input type="radio" asp-for="Client.Gender" value="F" /> Female
+    <span asp-validation-for="Client.Gender" class="text-danger"></span>
+    <br />
+
+    <label>Date Registered:</label>
+    <input asp-for="Client.DateRegistered" type="date" 
+           value="@DateTime.Now.ToString("yyyy-MM-dd")"
+           min="2019-01-01" max="2019-06-30" />
+    <span asp-validation-for="Client.DateRegistered" class="text-danger"></span>
+    <br />
+
+    <label>Event Days:</label>
+    <div>
+        <input type="checkbox" name="SelectedDaysList" value="Day 1" /> Day 1
+        <input type="checkbox" name="SelectedDaysList" value="Day 2" /> Day 2
+        <input type="checkbox" name="SelectedDaysList" value="Day 3" /> Day 3
+    </div>
+    <span class="text-danger">@ViewData["DaysError"]</span>
+    <br />
+
+    <label>Additional Request:</label>
+    <textarea asp-for="Client.AdditionalRequest"></textarea>
+    <span asp-validation-for="Client.AdditionalRequest" class="text-danger"></span>
+    <br />
+
+    <button type="submit">Submit</button>
+</form> 
+
+<a asp-page="Index">Back to List</a>
