@@ -1,6 +1,6 @@
 # 🎟️ Event Registration App
 
-A **ASP.NET Core Razor Pages** application for registering and managing event attendees efficiently.
+A **ASP.NET Core Razor Pages** application for registering and managing event attendees.
 
 ## 🚀 Features
 - ✅ **Register new clients**
@@ -13,97 +13,86 @@ A **ASP.NET Core Razor Pages** application for registering and managing event at
 
 ---
 
-## 📌 Getting Started
-
+## 📌 Setup Instructions
 ### **1️⃣ Clone the Repository**
+To download the project, run:
 ```sh
 git clone https://github.com/aryanrekhi/EventRegistrationApp.git
+```
+```sh
 cd EventRegistrationApp
-2️⃣ Setup the Database
-Apply the latest database migrations:
+```
 
-sh
-Copy
-Edit
+### **2️⃣ Setup the Database**
+Apply database migrations:
+```sh
 dotnet ef database update
-3️⃣ Run the Application
-sh
-Copy
-Edit
+```
+
+### **3️⃣ Run the Application**
+```sh
 dotnet run
-4️⃣ Open in Browser
-Register a new client:
-🔗 http://localhost:5168/Clients/Create
+```
 
-View all registered clients:
-🔗 http://localhost:5168/Clients/Index
+### **4️⃣ Open in Browser**
+- **Register a new client:**  
+  ```
+  http://localhost:5168/Clients/Create
+  ```
+- **View all registered clients:**  
+  ```
+  http://localhost:5168/Clients/Index
+  ```
+- **Fetch client data via API (JSON output):**  
+  ```
+  http://localhost:5168/api/clients
+  ```
 
-Fetch client data via API (JSON output):
-🔗 http://localhost:5168/api/clients
+---
 
-🔹 Database Setup
-This app uses SQL Server LocalDB for storage.
+## 🔹 Database Setup
+- The app uses **SQL Server LocalDB**.
+- If you need to reset the database, run:
+  ```sh
+  dotnet ef database drop --force
+  dotnet ef database update
+  ```
 
-If you need to reset the database, run:
+---
 
-sh
-Copy
-Edit
-dotnet ef database drop --force
-dotnet ef database update
-🔹 Web API for Clients
-The application exposes a Web API endpoint to fetch client data dynamically.
+## 🔹 Web API for Clients
+This application exposes a **Web API** for fetching client data dynamically.
 
-GET Clients List
+- **GET Clients List**:
+  ```
+  GET /api/clients
+  ```
+- **Example Response (JSON)**:
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "gender": "F",
+      "dateRegistered": "2019-01-10T00:00:00",
+      "selectedDays": "Day 1, Day 3",
+      "additionalRequest": "Vegetarian meal"
+    }
+  ]
+  ```
 
-http
-Copy
-Edit
-GET /api/clients
-Example Response (JSON)
+---
 
-json
-Copy
-Edit
-[
-  {
-    "id": 1,
-    "name": "Alice Johnson",
-    "email": "alice@example.com",
-    "gender": "F",
-    "dateRegistered": "2019-01-10T00:00:00",
-    "selectedDays": "Day 1, Day 3",
-    "additionalRequest": "Vegetarian meal"
-  }
-]
-🛠️ Technologies Used
-ASP.NET Core Razor Pages
-Entity Framework Core
-SQL Server LocalDB
-JavaScript (for dynamic client list loading)
-Bootstrap (for styling - optional)
-🎯 Author
-👨‍💻 Developed by Aryan Rekhi
-🔗 GitHub: github.com/aryanrekhi
+## 🛠️ Technologies Used
+✔ **ASP.NET Core Razor Pages**  
+✔ **Entity Framework Core**  
+✔ **SQL Server LocalDB**  
+✔ **JavaScript (for loading client list dynamically)**  
+✔ **Bootstrap (for styling - optional)**  
 
-📌 Adding README to GitHub
-Option 1: Using GitHub UI
-Go to your repository:
-🔗 https://github.com/aryanrekhi/EventRegistrationApp
-Click "Add a README".
-Paste this content into the editor.
-Click "Commit changes".
-Option 2: Using Git
-Create a README.md file locally:
-sh
-Copy
-Edit
-echo "# Event Registration App" >> README.md
-Open README.md in VS Code or Notepad, paste the content, and save.
-Commit & Push:
-sh
-Copy
-Edit
-git add README.md
-git commit -m "Added README.md with project setup instructions"
-git push origin main
+---
+
+## 🎯 Author
+👨‍💻 Developed by **Aryan Rekhi**  
+🔗 GitHub: [https://github.com/aryanrekhi](https://github.com/aryanrekhi)
