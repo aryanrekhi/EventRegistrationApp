@@ -1,0 +1,3 @@
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+*.sln linguist-detectable=true
