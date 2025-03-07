@@ -1,47 +1,131 @@
-@page
+﻿@page
 @model EventRegistration.Pages.Clients.CreateModel
 
-<h2>Register Client</h2>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="glassmorphism p-5 rounded shadow-lg w-100" style="max-width: 500px;">
+        <h2 class="text-center text-primary">🖊️ Register a New Client</h2>
 
-<form method="post">
-    <label>Name:</label>
-    <input asp-for="Client.Name" />
-    <span asp-validation-for="Client.Name" class="text-danger"></span>
-    <br />
+        <form method="post" class="mt-4">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input asp-for="Client.Name" class="form-control glass-input" placeholder="Enter full name">
+                <span asp-validation-for="Client.Name" class="text-danger"></span>
+            </div>
 
-    <label>Email:</label>
-    <input asp-for="Client.Email" type="email" />
-    <span asp-validation-for="Client.Email" class="text-danger"></span>
-    <br />
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="Client.Email" type="email" class="form-control glass-input" placeholder="Enter email">
+                <span asp-validation-for="Client.Email" class="text-danger"></span>
+            </div>
 
-    <label>Gender:</label>
-    <input type="radio" asp-for="Client.Gender" value="M" /> Male
-    <input type="radio" asp-for="Client.Gender" value="F" /> Female
-    <span asp-validation-for="Client.Gender" class="text-danger"></span>
-    <br />
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select asp-for="Client.Gender" class="form-control glass-input">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </div>
 
-    <label>Date Registered:</label>
-    <input asp-for="Client.DateRegistered" type="date" 
-           value="@DateTime.Now.ToString("yyyy-MM-dd")"
-           min="2019-01-01" max="2019-06-30" />
-    <span asp-validation-for="Client.DateRegistered" class="text-danger"></span>
-    <br />
+            <div class="mb-3">
+                <label class="form-label">Date Registered</label>
+                <input asp-for="Client.DateRegistered" type="date" class="form-control glass-input">
+            </div>
 
-    <label>Event Days:</label>
-    <div>
-        <input type="checkbox" name="SelectedDaysList" value="Day 1" /> Day 1
-        <input type="checkbox" name="SelectedDaysList" value="Day 2" /> Day 2
-        <input type="checkbox" name="SelectedDaysList" value="Day 3" /> Day 3
+            <div class="mb-3">
+                <label class="form-label">Event Days</label>
+                <div class="d-flex gap-3">
+                    <label><input type="checkbox" name="SelectedDaysList" value="Day 1"> Day 1</label>
+                    <label><input type="checkbox" name="SelectedDaysList" value="Day 2"> Day 2</label>
+                    <label><input type="checkbox" name="SelectedDaysList" value="Day 3"> Day 3</label>
+                </div>
+                <span class="text-danger">@ViewData["DaysError"]</span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Additional Request</label>
+                <textarea asp-for="Client.AdditionalRequest" class="form-control glass-input" placeholder="Any special requests?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">🚀 Register Client</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-page="/Clients/Index" class="btn btn-outline-light btn-glass">🔙 Back to Clients</a>
+        </div>
     </div>
-    <span class="text-danger">@ViewData["DaysError"]</span>
-    <br />
+</div>
 
-    <label>Additional Request:</label>
-    <textarea asp-for="Client.AdditionalRequest"></textarea>
-    <span asp-validation-for="Client.AdditionalRequest" class="text-danger"></span>
-    <br />
+<style>
+    :root {
+        --light-bg: #f8f9fa;
+        --dark-bg: #121212;
+        --primary-color: #ff4d6d;
+        --secondary-color: #5a189a;
+    }
 
-    <button type="submit">Submit</button>
-</form> 
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--light-bg);
+        color: #333;
+        transition: background 0.3s, color 0.3s;
+    }
 
-<a asp-page="Index">Back to List</a>
+    .dark-mode {
+        background-color: var(--dark-bg) !important;
+        color: #fff !important;
+    }
+
+    .glassmorphism {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: 0.3s ease-in-out;
+    }
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: black;
+        transition: 0.3s ease-in-out;
+    }
+
+    .dark-mode .glassmorphism {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(20px);
+    }
+
+    .dark-mode .glass-input {
+        background: rgba(30, 30, 30, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .glass-input::placeholder {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .dark-mode .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-glass {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        color: #fff;
+        transition: 0.3s ease-in-out;
+    }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+    .dark-mode .btn-glass {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+</style>

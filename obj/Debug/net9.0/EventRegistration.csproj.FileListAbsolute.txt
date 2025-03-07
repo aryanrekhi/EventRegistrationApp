@@ -147,6 +147,7 @@ C:\Users\bethe\EventRegistration\obj\Debug\net9.0\EventRegistration.csproj.CoreC
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\EventRegistration.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\EventRegistration.RazorAssemblyInfo.cache
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\EventRegistration.RazorAssemblyInfo.cs
+C:\Users\bethe\EventRegistration\obj\Debug\net9.0\EventRegistration.sourcelink.json
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\scopedcss\bundle\EventRegistration.styles.css
 C:\Users\bethe\EventRegistration\obj\Debug\net9.0\scopedcss\projectbundle\EventRegistration.bundle.scp.css

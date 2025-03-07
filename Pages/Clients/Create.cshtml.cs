@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EventRegistration.Data;
 using EventRegistration.Models;
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EventRegistration.Pages.Clients
 {
@@ -14,6 +15,7 @@ namespace EventRegistration.Pages.Clients
         [BindProperty]
         public Client Client { get; set; } = new();
 
+        [BindProperty]
         public List<string> SelectedDaysList { get; set; } = new();
 
         public CreateModel(AppDbContext context)
@@ -25,7 +27,7 @@ namespace EventRegistration.Pages.Clients
         {
             Console.WriteLine("🚀 OnPost() method triggered!");
 
-            // Manually capture checkbox values, ensuring non-null list
+            // Manually capture checkbox values
             SelectedDaysList = Request.Form["SelectedDaysList"].ToList() ?? new List<string>();
 
             if (SelectedDaysList.Count == 0)
@@ -35,9 +37,7 @@ namespace EventRegistration.Pages.Clients
                 return Page();
             }
 
-            // ✅ Check if the email already exists in the database
-            bool emailExists = _context.Clients.Any(c => c.Email == Client.Email);
-            if (emailExists)
+            if (_context.Clients.Any(c => c.Email == Client.Email))
             {
                 Console.WriteLine($"❌ Duplicate email detected: {Client.Email}");
                 ModelState.AddModelError("Client.Email", "This email is already registered.");
@@ -47,17 +47,10 @@ namespace EventRegistration.Pages.Clients
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("❌ Model validation failed!");
-                foreach (var error in ModelState)
-                {
-                    foreach (var err in error.Value.Errors)
-                    {
-                        Console.WriteLine($"❌ Validation Error: {error.Key} - {err.ErrorMessage}");
-                    }
-                }
                 return Page();
             }
 
-            // Convert list to a comma-separated string and save it in Client.SelectedDays
+            // Convert list to a comma-separated string
             Client.SelectedDays = string.Join(", ", SelectedDaysList);
 
             try
@@ -73,7 +66,7 @@ namespace EventRegistration.Pages.Clients
                 return Page();
             }
 
-            return RedirectToPage("/Clients/Index");
+            return RedirectToPage("Index"); // ✅ Fixed redirect
         }
     }
 }

@@ -1,32 +1,153 @@
-@page
+﻿@page
 @model EventRegistration.Pages.Clients.IndexModel
 
-<h2>Registered Clients</h2>
+<div class="container my-5">
+    <h2 class="text-center text-primary">🎟️ Registered Clients</h2>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Date Registered</th>
-            <th>Event Days</th>
-            <th>Additional Request</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var client in Model.Clients)
-        {
-        <tr>
-            <td>@client.Name</td>
-            <td>@client.Email</td>
-            <td>@client.Gender</td>
-            <td>@client.DateRegistered.ToString("yyyy-MM-dd")</td>
-            <td>@client.SelectedDays</td>
-            <td>@client.AdditionalRequest</td>
-        </tr>
+    <input type="text" id="search" class="form-control my-3" placeholder="🔍 Search clients...">
+
+    <table class="table table-hover shadow-sm rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Date Registered</th>
+                <th>Event Days</th>
+                <th>Additional Request</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="clientsTable"></tbody>
+    </table>
+
+    <a asp-page="/Clients/Create" class="btn btn-primary">➕ Add New Client</a>
+</div>
+
+<!-- Edit Form (Hidden by Default) -->
+<div id="editForm" class="container mt-3 card p-3" style="display: none;">
+    <h4>Edit Client</h4>
+    <input type="hidden" id="editClientId">
+    <input type="text" id="editName" class="form-control my-2" placeholder="Name">
+    <input type="email" id="editEmail" class="form-control my-2" placeholder="Email">
+    <select id="editGender" class="form-control my-2">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+    </select>
+    <input type="date" id="editDate" class="form-control my-2">
+    <input type="text" id="editDays" class="form-control my-2" placeholder="Event Days (comma separated)">
+    <textarea id="editRequest" class="form-control my-2" placeholder="Additional Request"></textarea>
+    <button class="btn btn-success" onclick="updateClient()">Save Changes</button>
+    <button class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+</div>
+
+<script>
+    async function fetchClients() {
+        try {
+            const response = await fetch('/api/clients');
+            if (!response.ok) {
+                console.error("Failed to fetch clients. Server returned:", response.status);
+                return;
+            }
+
+            const clients = await response.json();
+            const tableBody = document.querySelector('#clientsTable');
+            tableBody.innerHTML = ""; // Clear previous data
+
+            clients.forEach(client => {
+                const row = `<tr class="client-row" id="row-${client.id}">
+                    <td>${client.name}</td>
+                    <td>${client.email}</td>
+                    <td>${client.gender}</td>
+                    <td>${client.dateRegistered.split('T')[0]}</td>
+                    <td>${client.selectedDays || "Not Selected"}</td>
+                    <td>${client.additionalRequest || "No Request"}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editClient(${client.id})">✏️ Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteClient(${client.id})">🗑️ Delete</button>
+                    </td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+
+            // Attach event listener for search after fetching clients
+            document.getElementById("search").addEventListener("input", searchClients);
+        } catch (error) {
+            console.error("Error fetching clients:", error);
         }
-    </tbody>
-</table>
+    }
 
-<a asp-page="/Clients/Create">Add New Client</a>
+    async function deleteClient(id) {
+        if (!confirm("Are you sure you want to delete this client?")) return;
+
+        const response = await fetch(`/api/clients/${id}`, { method: "DELETE" });
+        if (response.ok) {
+            document.getElementById(`row-${id}`).remove(); // Remove row from UI
+        } else {
+            alert("Failed to delete client.");
+        }
+    }
+
+    async function editClient(id) {
+        const response = await fetch(`/api/clients/${id}`);
+        if (!response.ok) {
+            alert("Client not found.");
+            return;
+        }
+
+        const client = await response.json();
+
+        document.getElementById("editClientId").value = client.id;
+        document.getElementById("editName").value = client.name;
+        document.getElementById("editEmail").value = client.email;
+        document.getElementById("editGender").value = client.gender;
+        document.getElementById("editDate").value = client.dateRegistered.split('T')[0];
+        document.getElementById("editDays").value = client.selectedDays;
+        document.getElementById("editRequest").value = client.additionalRequest;
+
+        document.getElementById("editForm").style.display = "block";
+    }
+
+    async function updateClient() {
+        const id = document.getElementById("editClientId").value;
+        const updatedClient = {
+            id: id,
+            name: document.getElementById("editName").value,
+            email: document.getElementById("editEmail").value,
+            gender: document.getElementById("editGender").value,
+            dateRegistered: document.getElementById("editDate").value,
+            selectedDays: document.getElementById("editDays").value,
+            additionalRequest: document.getElementById("editRequest").value
+        };
+
+        const response = await fetch(`/api/clients/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedClient)
+        });
+
+        if (response.ok) {
+            alert("Client updated successfully!");
+            fetchClients(); // Refresh the list
+            document.getElementById("editForm").style.display = "none";
+        } else {
+            alert("Failed to update client.");
+        }
+    }
+
+    function cancelEdit() {
+        document.getElementById("editForm").style.display = "none";
+    }
+
+    function searchClients() {
+        const searchTerm = document.getElementById("search").value.toLowerCase();
+        const rows = document.querySelectorAll(".client-row");
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? "" : "none";
+        });
+    }
+
+    fetchClients();
+</script>
