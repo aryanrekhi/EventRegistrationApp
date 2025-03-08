@@ -11,7 +11,7 @@ A modern **ASP.NET Core Razor Pages** application for registering and managing e
 - ✅ **Edit & Delete Clients with Instant UI Updates**
 - ✅ **Real-Time Search & Filtering**
 - ✅ **Download Clients as CSV**
-- ✅ **Uses SQL Server LocalDB for database storage**
+- ✅ **Uses Firebase Firestore for cloud database storage**
 - ✅ **Web API for fetching clients (`/api/clients`)**
 
 ---
@@ -39,10 +39,46 @@ cd EventRegistrationApp
 
 ---
 
-### **3️⃣ Setup the Database**
-Apply database migrations:
-```sh
-dotnet ef database update
+### **3️⃣ Setup Firebase Firestore Database**
+Since this project **originally used SQL Server LocalDB** but was later **migrated to Firebase Firestore**, follow these steps:
+
+#### **📌 Step 1: Create a Firebase Project**
+1. **Go to Firebase Console** → [https://console.firebase.google.com/](https://console.firebase.google.com/)
+2. **Click "Create a Project"** → Name it **EventRegistrationApp**.
+3. **Click "Continue"** and disable Google Analytics.
+4. **Click "Create"** → Wait for Firebase to set up.
+
+#### **📌 Step 2: Enable Firestore Database**
+1. **Go to Firestore Database** in Firebase.
+2. **Click "Create Database"** → Select **Start in Test Mode**.
+3. **Click "Next"** and set the location.
+
+#### **📌 Step 3: Download Firebase Credentials**
+1. **Go to Firebase Console** → Click **Project Settings**.
+2. **Go to the "Service Accounts" tab**.
+3. **Click "Generate New Private Key"**.
+4. **Download the JSON file**.
+5. **Move it to your project folder as:**
+   ```
+   C:\Users\bethe\EventRegistration\firebase-config.json
+   ```
+
+#### **📌 Step 4: Configure Firebase Credentials**
+Modify `appsettings.json`:
+```json
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+    "Firebase": {
+        "ProjectId": "your-firebase-project-id",
+        "AuthFilePath": "firebase-config.json"
+    }
+}
 ```
 
 ---
@@ -72,48 +108,37 @@ http://localhost:5168/api/clients
 
 ---
 
-## 🔹 Database Setup
-The app uses **SQL Server LocalDB**.  
-If you need to reset the database, run:
-```sh
-dotnet ef database drop --force
-dotnet ef database update
-```
-
----
-
 ## 🔹 Web API for Clients
-This application exposes a Web API for fetching client data dynamically.
+This application exposes a **Web API** for fetching client data dynamically.
 
 **GET Clients List:**
 ```
 GET /api/clients
 ```
 
-**GET Single Client by ID:**
+**GET Single Client by Email:**
 ```
-GET /api/clients/{id}
+GET /api/clients/{email}
 ```
 
 **DELETE a Client:**
 ```
-DELETE /api/clients/{id}
+DELETE /api/clients/{email}
 ```
 
 **UPDATE a Client:**
 ```
-PUT /api/clients/{id}
+PUT /api/clients/{email}
 ```
 
-Example Response (JSON):
+**Example Response (JSON):**
 ```json
 [
   {
-    "id": 1,
     "name": "Alice Johnson",
     "email": "alice@example.com",
     "gender": "F",
-    "dateRegistered": "2019-01-10T00:00:00",
+    "dateRegistered": "2019-01-10T00:00:00Z",
     "selectedDays": "Day 1, Day 3",
     "additionalRequest": "Vegetarian meal"
   }
@@ -124,11 +149,20 @@ Example Response (JSON):
 
 ## 🛠️ Technologies Used
 ✔ **ASP.NET Core Razor Pages**  
-✔ **Entity Framework Core**  
-✔ **SQL Server LocalDB**  
+✔ **Firebase Firestore (Cloud Database)**  
+✔ **Google Cloud Firestore SDK**  
 ✔ **JavaScript (for live search, edit & delete)**  
 ✔ **Bootstrap & TailwindCSS for modern UI**  
 ✔ **Font Awesome for icons**  
+
+---
+
+## 🎯 Notes on Database Migration
+- Initially, this project was **built using SQL LocalDB** as per the assignment.
+- Later, we **migrated the database to Firebase Firestore** for:
+  - **Better scalability**
+  - **Easier setup (No need for migrations)**
+  - **Cloud storage instead of local storage**
 
 ---
 
