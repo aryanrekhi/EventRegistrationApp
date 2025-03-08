@@ -27,9 +27,9 @@
 <!-- Edit Form (Hidden by Default) -->
 <div id="editForm" class="container mt-3 card p-3" style="display: none;">
     <h4>Edit Client</h4>
-    <input type="hidden" id="editClientId">
+    <input type="hidden" id="editClientEmail">
     <input type="text" id="editName" class="form-control my-2" placeholder="Name">
-    <input type="email" id="editEmail" class="form-control my-2" placeholder="Email">
+    <input type="email" id="editEmail" class="form-control my-2" placeholder="Email" readonly>
     <select id="editGender" class="form-control my-2">
         <option value="M">Male</option>
         <option value="F">Female</option>
@@ -52,10 +52,10 @@
 
             const clients = await response.json();
             const tableBody = document.querySelector('#clientsTable');
-            tableBody.innerHTML = ""; // Clear previous data
+            tableBody.innerHTML = "";
 
             clients.forEach(client => {
-                const row = `<tr class="client-row" id="row-${client.id}">
+                const row = `<tr class="client-row" id="row-${client.email}">
                     <td>${client.name}</td>
                     <td>${client.email}</td>
                     <td>${client.gender}</td>
@@ -63,33 +63,32 @@
                     <td>${client.selectedDays || "Not Selected"}</td>
                     <td>${client.additionalRequest || "No Request"}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" onclick="editClient(${client.id})">✏️ Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteClient(${client.id})">🗑️ Delete</button>
+                        <button class="btn btn-warning btn-sm" onclick="editClient('${client.email}')">✏️ Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteClient('${client.email}')">🗑️ Delete</button>
                     </td>
                 </tr>`;
                 tableBody.innerHTML += row;
             });
 
-            // Attach event listener for search after fetching clients
             document.getElementById("search").addEventListener("input", searchClients);
         } catch (error) {
             console.error("Error fetching clients:", error);
         }
     }
 
-    async function deleteClient(id) {
+    async function deleteClient(email) {
         if (!confirm("Are you sure you want to delete this client?")) return;
 
-        const response = await fetch(`/api/clients/${id}`, { method: "DELETE" });
+        const response = await fetch(`/api/clients/${encodeURIComponent(email)}`, { method: "DELETE" });
         if (response.ok) {
-            document.getElementById(`row-${id}`).remove(); // Remove row from UI
+            document.getElementById(`row-${email}`).remove();
         } else {
             alert("Failed to delete client.");
         }
     }
 
-    async function editClient(id) {
-        const response = await fetch(`/api/clients/${id}`);
+    async function editClient(email) {
+        const response = await fetch(`/api/clients/${encodeURIComponent(email)}`);
         if (!response.ok) {
             alert("Client not found.");
             return;
@@ -97,30 +96,29 @@
 
         const client = await response.json();
 
-        document.getElementById("editClientId").value = client.id;
+        document.getElementById("editClientEmail").value = client.email;
         document.getElementById("editName").value = client.name;
         document.getElementById("editEmail").value = client.email;
         document.getElementById("editGender").value = client.gender;
         document.getElementById("editDate").value = client.dateRegistered.split('T')[0];
-        document.getElementById("editDays").value = client.selectedDays;
-        document.getElementById("editRequest").value = client.additionalRequest;
+        document.getElementById("editDays").value = client.selectedDays || "";
+        document.getElementById("editRequest").value = client.additionalRequest || "";
 
         document.getElementById("editForm").style.display = "block";
     }
 
     async function updateClient() {
-        const id = document.getElementById("editClientId").value;
+        const email = document.getElementById("editClientEmail").value;
         const updatedClient = {
-            id: id,
             name: document.getElementById("editName").value,
             email: document.getElementById("editEmail").value,
             gender: document.getElementById("editGender").value,
-            dateRegistered: document.getElementById("editDate").value,
+            dateRegistered: document.getElementById("editDate").value + "T00:00:00Z",
             selectedDays: document.getElementById("editDays").value,
             additionalRequest: document.getElementById("editRequest").value
         };
 
-        const response = await fetch(`/api/clients/${id}`, {
+        const response = await fetch(`/api/clients/${encodeURIComponent(email)}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedClient)
@@ -128,7 +126,7 @@
 
         if (response.ok) {
             alert("Client updated successfully!");
-            fetchClients(); // Refresh the list
+            fetchClients();
             document.getElementById("editForm").style.display = "none";
         } else {
             alert("Failed to update client.");

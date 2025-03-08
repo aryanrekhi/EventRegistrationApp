@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using EventRegistration.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using EventRegistration.Models;
-using System.Linq;
+using EventRegistration.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EventRegistration.Controllers
 {
@@ -9,61 +10,56 @@ namespace EventRegistration.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly FirebaseService _firebaseService;
 
-        public ClientsController(AppDbContext context)
+        public ClientsController(FirebaseService firebaseService)
         {
-            _context = context;
+            _firebaseService = firebaseService;
         }
 
         [HttpGet]
-        public IActionResult GetClients()
+        public async Task<IActionResult> GetClients()
         {
-            var clients = _context.Clients
-                .OrderByDescending(c => c.DateRegistered)
-                .ToList();
-
-            if (!clients.Any())
-            {
-                return Ok(new List<Client>()); // Return empty JSON array
-            }
-
+            var clients = await _firebaseService.GetClientsAsync();
             return Ok(clients);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetClient(int id)
+        [HttpGet("{email}")]
+        public async Task<IActionResult> GetClient(string email)
         {
-            var client = _context.Clients.Find(id);
-            if (client == null) return NotFound();
+            string decodedEmail = Uri.UnescapeDataString(email.Trim().ToLower()); // ✅ Normalize and decode email
+
+            var client = await _firebaseService.GetClientAsync(decodedEmail);
+            if (client == null) return NotFound($"Client with email {decodedEmail} not found.");
+
             return Ok(client);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateClient(int id, [FromBody] Client updatedClient)
+        [HttpPost]
+        public async Task<IActionResult> AddClient([FromBody] Client client)
         {
-            var client = _context.Clients.Find(id);
-            if (client == null) return NotFound();
+            string cleanEmail = client.Email.Trim().ToLower();
+            client.Email = cleanEmail;  // ✅ Ensure consistent formatting before saving
 
-            client.Name = updatedClient.Name;
-            client.Email = updatedClient.Email;
-            client.Gender = updatedClient.Gender;
-            client.DateRegistered = updatedClient.DateRegistered;
-            client.SelectedDays = updatedClient.SelectedDays;
-            client.AdditionalRequest = updatedClient.AdditionalRequest;
-
-            _context.SaveChanges();
-            return Ok(client);
+            await _firebaseService.AddClientAsync(client);
+            return CreatedAtAction(nameof(GetClients), new { email = client.Email }, client);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteClient(int id)
+        [HttpPut("{email}")]
+        public async Task<IActionResult> UpdateClient(string email, [FromBody] Client client)
         {
-            var client = _context.Clients.Find(id);
-            if (client == null) return NotFound();
+            string decodedEmail = Uri.UnescapeDataString(email.Trim().ToLower()); // ✅ Decode email
 
-            _context.Clients.Remove(client);
-            _context.SaveChanges();
+            await _firebaseService.UpdateClientAsync(decodedEmail, client);
+            return NoContent();
+        }
+
+        [HttpDelete("{email}")]
+        public async Task<IActionResult> DeleteClient(string email)
+        {
+            string decodedEmail = Uri.UnescapeDataString(email.Trim().ToLower()); // ✅ Decode email
+
+            await _firebaseService.DeleteClientAsync(decodedEmail);
             return NoContent();
         }
     }

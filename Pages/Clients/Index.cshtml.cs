@@ -1,25 +1,25 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using EventRegistration.Data;
 using EventRegistration.Models;
+using EventRegistration.Services;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace EventRegistration.Pages.Clients
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly FirebaseService _firebaseService;
 
-        public IndexModel(AppDbContext context)
+        public IndexModel(FirebaseService firebaseService)
         {
-            _context = context;
+            _firebaseService = firebaseService;
         }
 
         public List<Client> Clients { get; set; } = new();
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Clients = _context.Clients.OrderByDescending(c => c.DateRegistered).ToList();
+            Clients = await _firebaseService.GetClientsAsync();
         }
     }
 }

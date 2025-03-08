@@ -1,5 +1,6 @@
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\appsettings.json
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\firebase-config.json
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\EventRegistration.staticwebassets.runtime.json
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\EventRegistration.staticwebassets.endpoints.json
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\EventRegistration.exe
@@ -9,6 +10,21 @@ C:\Users\bethe\EventRegistration\bin\Debug\net9.0\EventRegistration.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\EventRegistration.pdb
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Api.CommonProtos.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Api.Gax.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Api.Gax.Grpc.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Apis.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Apis.Auth.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Apis.Core.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Cloud.Firestore.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Cloud.Firestore.V1.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Cloud.Location.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.LongRunning.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Google.Protobuf.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Grpc.Auth.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Grpc.Core.Api.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Grpc.Net.Client.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Grpc.Net.Common.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Humanizer.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Microsoft.Build.Locator.dll
@@ -45,6 +61,9 @@ C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Npgsql.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.ClientModel.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.CodeDom.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Composition.AttributedModel.dll
@@ -56,6 +75,8 @@ C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Configuration.Configura
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Drawing.Common.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Formats.Asn1.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Linq.Async.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Management.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Memory.Data.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Runtime.Caching.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
@@ -136,6 +157,7 @@ C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win-x86\native\Micros
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net7.0\System.Management.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\bethe\EventRegistration\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll

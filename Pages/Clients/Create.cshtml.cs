@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using EventRegistration.Data;
 using EventRegistration.Models;
+using EventRegistration.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EventRegistration.Pages.Clients
 {
     public class CreateModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly FirebaseService _firebaseService;
 
         [BindProperty]
         public Client Client { get; set; } = new();
@@ -18,29 +19,25 @@ namespace EventRegistration.Pages.Clients
         [BindProperty]
         public List<string> SelectedDaysList { get; set; } = new();
 
-        public CreateModel(AppDbContext context)
+        public CreateModel(FirebaseService firebaseService)
         {
-            _context = context;
+            _firebaseService = firebaseService;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             Console.WriteLine("🚀 OnPost() method triggered!");
 
-            // Manually capture checkbox values
-            SelectedDaysList = Request.Form["SelectedDaysList"].ToList() ?? new List<string>();
+            // Capture checkbox values manually
+            SelectedDaysList = Request.Form["SelectedDaysList"]
+                .Select(d => d ?? string.Empty)
+                .ToList();
+
 
             if (SelectedDaysList.Count == 0)
             {
                 Console.WriteLine("❌ No event days selected.");
                 ViewData["DaysError"] = "At least one event day must be selected.";
-                return Page();
-            }
-
-            if (_context.Clients.Any(c => c.Email == Client.Email))
-            {
-                Console.WriteLine($"❌ Duplicate email detected: {Client.Email}");
-                ModelState.AddModelError("Client.Email", "This email is already registered.");
                 return Page();
             }
 
@@ -50,14 +47,14 @@ namespace EventRegistration.Pages.Clients
                 return Page();
             }
 
-            // Convert list to a comma-separated string
             Client.SelectedDays = string.Join(", ", SelectedDaysList);
+            Client.DateRegistered = DateTime.UtcNow;  // ✅ Ensure UTC format
+
 
             try
             {
-                _context.Clients.Add(Client);
-                _context.SaveChanges();
-                Console.WriteLine("✅ Client successfully saved to database!");
+                await _firebaseService.AddClientAsync(Client);
+                Console.WriteLine("✅ Client successfully saved to Firestore!");
             }
             catch (Exception ex)
             {
@@ -66,7 +63,7 @@ namespace EventRegistration.Pages.Clients
                 return Page();
             }
 
-            return RedirectToPage("Index"); // ✅ Fixed redirect
+            return RedirectToPage("Index");
         }
     }
 }
