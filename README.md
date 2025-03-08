@@ -166,7 +166,6 @@ PUT /api/clients/{email}
 
 ---
 
-
 ## 🎯 Author
 👨‍💻 Developed by **Aryan Rekhi**  
 🔗 GitHub: [@aryanrekhi](https://github.com/aryanrekhi)
