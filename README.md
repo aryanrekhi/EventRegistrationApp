@@ -58,13 +58,11 @@ Since this project **originally used SQL Server LocalDB** but was later **migrat
 2. **Go to the "Service Accounts" tab**.
 3. **Click "Generate New Private Key"**.
 4. **Download the JSON file**.
-5. **Move it to your project folder as:**
-   ```
-   C:\Users\bethe\EventRegistration\firebase-config.json
-   ```
+5. **Move it to your project folder and note the exact path** (e.g., `C:\Users\YourName\EventRegistration\firebase-config.json`).
 
 #### **📌 Step 4: Configure Firebase Credentials**
-Modify `appsettings.json`:
+1. **Modify `appsettings.json`** and update the Firebase authentication path:
+
 ```json
 {
     "Logging": {
@@ -76,35 +74,40 @@ Modify `appsettings.json`:
     "AllowedHosts": "*",
     "Firebase": {
         "ProjectId": "your-firebase-project-id",
-        "AuthFilePath": "firebase-config.json"
+        "AuthFilePath": "C:\\Users\\YourName\\EventRegistration\\firebase-config.json"
     }
 }
 ```
+> **Important:** Replace `C:\\Users\\YourName\\EventRegistration\\firebase-config.json` with your **own** correct file path!
+
+2. **Remove `firebase-config.json` from `.gitignore`** to ensure it's available when running the application.
 
 ---
 
-### **4️⃣ Run the Application**
+### **4️⃣ Build & Run the Application**
+Before running the app, clean and build the project to avoid issues:
+
 ```sh
+dotnet clean
+dotnet build
 dotnet run
 ```
 
 ---
 
 ### **5️⃣ Open in Browser**
-Register a new client:
-```
-http://localhost:5168/Clients/Create
-```
-
-View all registered clients:
-```
-http://localhost:5168/Clients/Index
-```
-
-Fetch client data via API (JSON output):
-```
-http://localhost:5168/api/clients
-```
+- **Register a new client:**  
+  ```
+  http://localhost:5168/Clients/Create
+  ```
+- **View all registered clients:**  
+  ```
+  http://localhost:5168/Clients/Index
+  ```
+- **Fetch client data via API (JSON output):**  
+  ```
+  http://localhost:5168/api/clients
+  ```
 
 ---
 
@@ -169,3 +172,7 @@ PUT /api/clients/{email}
 ## 🎯 Author
 👨‍💻 Developed by **Aryan Rekhi**  
 🔗 GitHub: [@aryanrekhi](https://github.com/aryanrekhi)
+
+---
+
+> **⚠ Need Firebase credentials?** Request them from the author or set up a new Firebase project using the steps above.
